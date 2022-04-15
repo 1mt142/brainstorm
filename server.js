@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require("path");
 require('./core/db')
 const dotenv = require('dotenv');
 dotenv.config();
@@ -8,6 +9,8 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(express.static(path.join(__dirname, "public")));
 
 // Routes
 app.get('/', async (req, res) => {
@@ -21,6 +24,9 @@ app.use('/v1/books', BooksRoute);
 
 const AuthRoute = require("./routes/auth");
 app.use('/v1/auth', AuthRoute);
+// Profile
+const ProfileRoute = require("./routes/profile");
+app.use('/v1/user', ProfileRoute);
 
 app.listen(
   3000,

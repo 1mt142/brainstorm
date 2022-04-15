@@ -24,6 +24,9 @@ const authUserSchema = mongoose.Schema({
       required:true,
       default:'0'
   },
+  avatar:{
+      type:String
+  },
   status: {
     type: String,
     enum: ["active", "inactive"],

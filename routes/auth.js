@@ -8,12 +8,13 @@ const authUserSchema=require('../model/authUser')
 const AuthUser = new mongoose.model('AuthUser',authUserSchema)
 
 const { userLogin ,tokenRefresh} = require('../middleware/auth');
+const addImage = require('../middleware/file');
 
 dotenv.config();
 
 
 // create User
-router.post('/signup',async(req,res)=>{
+router.post('/signup',addImage.single('avatar'),async(req,res)=>{
   console.log("Requesting");
   try {
       const hashedPassword = await bcrypt.hash(req.body.password, 10);
@@ -23,6 +24,7 @@ router.post('/signup',async(req,res)=>{
           email_phone:req.body.email_phone,
           email:req.body.email,
           password: hashedPassword,
+          avatar:req.file.path
       });
       await newUser.save();
       res.status(200).json({
