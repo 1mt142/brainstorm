@@ -1,6 +1,6 @@
 const express = require('express');
+require('./core/db')
 const dotenv = require('dotenv');
-
 dotenv.config();
 
 // Create express app
@@ -23,6 +23,6 @@ const AuthRoute = require("./routes/auth");
 app.use('/v1/auth', AuthRoute);
 
 app.listen(
-  process.env.PORT,
-  console.log('Listening on port ', process.env.PORT)
+  3000,
+  console.log('Listening on port ', 3000)
 );

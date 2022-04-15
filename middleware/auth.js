@@ -1,9 +1,14 @@
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
-const db = require('../data/users');
+// const db = require('../data/users');
+const mongoose = require('mongoose')
+const authUserSchema=require('../model/authUser')
+const AuthUser = new mongoose.model('AuthUser',authUserSchema)
 const bcrypt = require('bcrypt');
 dotenv.config();
 const refreshList = {};
+
+console.log(refreshList);
 
 const verifyToken = (req, res, next) => {
     const authHeader = req.headers['authorization'];
@@ -54,7 +59,7 @@ const verifyToken = (req, res, next) => {
   };
 
 const userLogin = async (req, res, next) => {
-  const users = db.users;
+  const users = await AuthUser.find({ username: req.body.user });
   const user = users.find((item) => item.username === req.body.user);
   if (user) {
     const validPassword = await bcrypt.compare(
@@ -93,7 +98,7 @@ function generateAccessToken(username, email, level) {
     { user: username, email: email, level: level },
     process.env.SECRET_TOKEN,
     {
-      expiresIn: '1h',
+      expiresIn: '600000',
     }
   );
 }
